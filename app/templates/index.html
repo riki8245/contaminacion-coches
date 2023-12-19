@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coches Castellón</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body>
+
+<label for="marcaDropdown">Selecciona Marca:</label>
+<select id="marcaDropdown" onchange="cargarModelos()">
+    <option value="" disabled selected>Seleccione una marca</option>
+</select>
+
+
+<br>
+
+<label for="modeloDropdown">Selecciona Modelo:</label>
+<select id="modeloDropdown">
+    <option value="" disabled selected>Primero seleccione una marca</option>
+</select>
+
+<br>
+
+<button onclick="traerRegistros()">Mostrar Registros</button>
+
+<br><br>
+
+<table id="tablaRegistros">
+    <!-- Aquí se mostrarán los registros -->
+</table>
+
+<script>
+    // Función para cargar las opciones del primer dropdown
+    function cargarMarcas() {
+        // Hacer la llamada al endpoint para obtener las marcas
+        fetch('http://127.0.0.1:5000/car/')
+            .then(response => response.json())
+            .then(data => {
+                // Obtener el dropdown de marcas
+                const marcaDropdown = document.getElementById('marcaDropdown');
+                
+                // Limpiar las opciones existentes
+                marcaDropdown.innerHTML = '<option value="" disabled selected>Seleccione una marca</option>';
+                
+                // Agregar las marcas obtenidas al dropdown (sin repetir)
+                const marcas = [...new Set(data.coche.map(item => item.marca))];
+                marcas.forEach(marca => {
+                    const option = document.createElement('option');
+                    option.value = marca;
+                    option.text = marca;
+                    marcaDropdown.add(option);
+                });
+            })
+            .catch(error => console.error('Error al cargar las marcas:', error));
+    }
+
+    // Función para cargar las opciones del segundo dropdown
+    function cargarModelos() {
+        // Obtener el valor seleccionado en el primer dropdown (marca)
+        const selectedMarca = document.getElementById('marcaDropdown').value;
+
+        // Obtener el dropdown de modelos
+        const modeloDropdown = document.getElementById('modeloDropdown');
+
+        // Limpiar las opciones existentes
+        modeloDropdown.innerHTML = '<option value="" disabled selected>Seleccione un modelo</option>';
+
+        // Si se selecciona una marca, hacer la llamada al endpoint para obtener los modelos de esa marca
+        if (selectedMarca) {
+            fetch(`http://127.0.0.1:5000/car/?marca=${encodeURIComponent(selectedMarca)}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Agregar los modelos obtenidos al dropdown (sin repetir)
+                    const modelos = [...new Set(data.coche.map(item => item.modelo))];
+                    modelos.forEach(modelo => {
+                        const option = document.createElement('option');
+                        option.value = modelo;
+                        option.text = modelo;
+                        modeloDropdown.add(option);
+                    });
+                })
+                .catch(error => console.error('Error al cargar los modelos:', error));
+        }
+    }
+
+    function traerRegistros() {
+        // Obtener el valor seleccionado en el primer dropdown (marca)
+        const selectedMarca = document.getElementById('marcaDropdown').value;
+        // Obtener el valor seleccionado en el segundo dropdown (modelo)
+        const selectedModelo = document.getElementById('modeloDropdown').value;
+
+        // Hacer la llamada al endpoint con los parámetros seleccionados
+        const data = `http://127.0.0.1:5000/car/?modelo=${encodeURIComponent(selectedModelo)}&marca=${encodeURIComponent(selectedMarca)}`;
+
+        // Realizar la llamada y mostrar los registros en la tabla
+        fetch(data)
+            .then(response => response.json())
+            .then(data => {
+                // Obtener la tabla donde se mostrarán los registros
+                const tablaRegistros = document.getElementById('tablaRegistros');
+
+                // Limpiar la tabla
+                tablaRegistros.innerHTML = '';
+
+                // Crear la cabecera de la tabla
+                const cabecera = tablaRegistros.createTHead();
+                const filaCabecera = cabecera.insertRow();
+                Object.keys(data.coche[0]).forEach(key => {
+                    const th = document.createElement('th');
+                    th.textContent = key;
+                    filaCabecera.appendChild(th);
+                });
+
+                // Crear las filas de la tabla con los registros
+                const cuerpo = tablaRegistros.createTBody();
+                data.coche.forEach(registro => {
+                    const fila = cuerpo.insertRow();
+                    Object.values(registro).forEach(valor => {
+                        const celda = fila.insertCell();
+                        celda.textContent = valor;
+                    });
+                });
+            })
+            .catch(error => console.error('Error al traer los registros:', error));
+    }
+
+    // Al cargar la página, cargar las opciones del primer dropdown
+    cargarMarcas();
+</script>
+
+</body>
+</html>
+ 
