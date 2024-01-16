@@ -26,6 +26,7 @@ if __name__ == '__main__':
     # Blueprints
     app.register_blueprint(coche_routes, url_prefix='/car')
     app.register_blueprint(admin_routes, url_prefix='/view')
+    
 
     if check_empty_table():
         load_coches()

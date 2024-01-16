@@ -114,6 +114,9 @@
                     th.textContent = key;
                     filaCabecera.appendChild(th);
                 });
+                //const th = document.createElement('th');
+                //th.textContent = "Etiqueta";
+                //filaCabecera.appendChild(th);
 
                 // Crear las filas de la tabla con los registros
                 const cuerpo = tablaRegistros.createTBody();
@@ -123,6 +126,8 @@
                         const celda = fila.insertCell();
                         celda.textContent = valor;
                     });
+                    //const celda = fila.insertCell();
+                    //    celda.textContent = registro;
                 });
             })
             .catch(error => console.error('Error al traer los registros:', error));
