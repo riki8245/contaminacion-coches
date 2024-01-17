@@ -77,20 +77,54 @@
                 #marcaDropdown {
                     /* Stuff de decoracion */
                 }
+                
+                select {
+                    margin: 20px 20px 0px 20px;
+                    width: 20em;
+                    padding: 10px;
+                    font-size: 16px;
+                    border: 1px solid #3498db;
+                    border-radius: 5px;
+                    background-color: #fff;
+                    color: #555;
+                }
+
+                /* Estilo para el texto seleccionado en el dropdown */
+                select option {
+                    background-color: #fff;
+                    color: #555;
+                }
+
+                /* Estilo para el hover en las opciones del dropdown */
+                select option:hover {
+                    background-color: #3498db;
+                    color: #fff;
+                }
 
                 #modeloDropdown {
                     /* Stuff de decoracion */
                 }
 
-                #buttonShowMap {
+                button {
                     /* Stuff de decoracion */
                     margin: 20px 20px 0px 20px;
+                    padding: 10px 20px;
+                    font-size: 16px;
+                    background-color: #34dbb4;
+                    color: #fff;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    transition: background-color 0.3s ease;
+                }
+                button:hover {
+                    background-color: #239b77;
                 }
             </style>
 </head>
 <body>
 
-<label for="marcaDropdown" class="text">Selecciona Marca:</label>
+<!-- <label for="marcaDropdown" class="text">Selecciona Marca:</label> -->
 <select id="marcaDropdown" onchange="cargarModelos()">
     <option value="" disabled selected>Seleccione una marca</option>
 </select>
@@ -98,17 +132,15 @@
 
 <br>
 
-<label for="modeloDropdown" class="text">Selecciona Modelo:</label>
+<!-- <label for="modeloDropdown" class="text">Selecciona Modelo:</label> -->
 <select id="modeloDropdown">
     <option value="" disabled selected>Primero seleccione una marca</option>
 </select>
 
-<br>
 
-<button onclick="showMap()" id="buttonShowMap">Mostrar showMap</button>
+<button onclick="showMap()" calss="button">Mostrar showMap</button>
 
-<br>
-<div id="resultado"></div>
+<div id="resultado">Seleciona marca y modelo para calcular tu etiqueta</div>
 <br>
 
 <div class="folium-map" id="map" ></div>
