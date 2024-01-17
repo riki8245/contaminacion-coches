@@ -161,7 +161,7 @@ style="z-index: 999999">
     // Función para cargar las opciones del primer dropdown
     function cargarMarcas() {
         // Hacer la llamada al endpoint para obtener las marcas
-        fetch('http://127.0.0.1:5000/car/')
+        fetch('http://localhost:8080/car/')
             .then(response => response.json())
             .then(data => {
                 // Obtener el dropdown de marcas
@@ -196,7 +196,7 @@ style="z-index: 999999">
 
         // Si se selecciona una marca, hacer la llamada al endpoint para obtener los modelos de esa marca
         if (selectedMarca) {
-            fetch(`http://127.0.0.1:5000/car/?marca=${encodeURIComponent(selectedMarca)}`)
+            fetch(`http://localhost:8080/car/?marca=${encodeURIComponent(selectedMarca)}`)
                 .then(response => response.json())
                 .then(data => {
                     // Agregar los modelos obtenidos al dropdown (sin repetir)
@@ -220,7 +220,7 @@ style="z-index: 999999">
         const selectedModelo = document.getElementById('modeloDropdown').value;
 
         // Hacer la llamada al endpoint con los parámetros seleccionados
-        const data = `http://127.0.0.1:5000/car/?modelo=${encodeURIComponent(selectedModelo)}&marca=${encodeURIComponent(selectedMarca)}`; 
+        const data = `http://localhost:8080/car/?modelo=${encodeURIComponent(selectedModelo)}&marca=${encodeURIComponent(selectedMarca)}`; 
 
         let label = "None";
 

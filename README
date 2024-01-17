@@ -1,5 +1,7 @@
+#BUILD
 docker build -t rikisimo/contaminacioncochescastellon:latest .
 
+#TAG
 #Se pone 2 veces si es para sobreescribir
 docker tag rikisimo/contaminacioncochescastellon:latest rikisimo/contaminacioncochescastellon:latest
 
@@ -7,7 +9,7 @@ docker tag rikisimo/contaminacioncochescastellon:latest rikisimo/contaminacionco
 docker tag rikisimo/contaminacioncochescastellon:latest
 
 #Y Push
-docker push tu_nombre_de_usuario/mi_aplicacion:latest
+docker push rikisimo/contaminacioncochescastellon:latest
 
 #Ejecutar po comandos
 docker run -p 8080:80 rikisimo/contaminacioncochescastellon:latest
