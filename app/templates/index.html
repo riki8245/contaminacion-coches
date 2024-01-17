@@ -55,7 +55,7 @@
                     border-radius: 5px;
                     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
                     text-align: left;
-                    width: 20em;
+                    /* width: auto; */
                     transition: background-color 0.3s ease;
                 }
                 .resultado-verde {
@@ -138,7 +138,7 @@
 </select>
 
 
-<button onclick="showMap()" calss="button">Mostrar showMap</button>
+<button onclick="showMap()" calss="button" id="button">Mostrar showMap</button>
 
 <div id="resultado">Seleciona marca y modelo para calcular tu etiqueta</div>
 <br>
@@ -151,6 +151,8 @@ style="z-index: 999999">
 </img>
 
 <script>
+
+    var button = false;
     // Función para cargar las opciones del primer dropdown
     function cargarMarcas() {
         // Hacer la llamada al endpoint para obtener las marcas
@@ -182,6 +184,7 @@ style="z-index: 999999">
 
         // Obtener el dropdown de modelos
         const modeloDropdown = document.getElementById('modeloDropdown');
+        button = true;
 
         // Limpiar las opciones existentes
         modeloDropdown.innerHTML = '<option value="" disabled selected>Seleccione un modelo</option>';
@@ -204,64 +207,22 @@ style="z-index: 999999">
         }
     }
 
-    function traerRegistros() {
-        // Obtener el valor seleccionado en el primer dropdown (marca)
-        const selectedMarca = document.getElementById('marcaDropdown').value;
-        // Obtener el valor seleccionado en el segundo dropdown (modelo)
-        const selectedModelo = document.getElementById('modeloDropdown').value;
-
-        // Hacer la llamada al endpoint con los parámetros seleccionados
-        const data = `http://127.0.0.1:5000/car/?modelo=${encodeURIComponent(selectedModelo)}&marca=${encodeURIComponent(selectedMarca)}`;
-
-        // Realizar la llamada y mostrar los registros en la tabla
-        fetch(data)
-            .then(response => response.json())
-            .then(data => {
-                // Obtener la tabla donde se mostrarán los registros
-                const tablaRegistros = document.getElementById('tablaRegistros');
-
-                // Limpiar la tabla
-                tablaRegistros.innerHTML = '';
-
-                // Crear la cabecera de la tabla
-                const cabecera = tablaRegistros.createTHead();
-                const filaCabecera = cabecera.insertRow();
-                Object.keys(data.coche[0]).forEach(key => {
-                    const th = document.createElement('th');
-                    th.textContent = key;
-                    filaCabecera.appendChild(th);
-                });
-
-                // Crear las filas de la tabla con los registros
-                const cuerpo = tablaRegistros.createTBody();
-                data.coche.forEach(registro => {
-                    const fila = cuerpo.insertRow();
-                    Object.values(registro).forEach(valor => {
-                        const celda = fila.insertCell();
-                        celda.textContent = valor;
-                    });
-
-                });
-            })
-            .catch(error => console.error('Error al traer los registros:', error));
-    }
-
     function showMap() {
-
         // Obtener el valor seleccionado en el primer dropdown (marca)
+        if(!button) return;
         const selectedMarca = document.getElementById('marcaDropdown').value;
         // Obtener el valor seleccionado en el segundo dropdown (modelo)
         const selectedModelo = document.getElementById('modeloDropdown').value;
 
         // Hacer la llamada al endpoint con los parámetros seleccionados
-        const data = `http://127.0.0.1:5000/car/?modelo=${encodeURIComponent(selectedModelo)}&marca=${encodeURIComponent(selectedMarca)}`;
+        const data = `http://127.0.0.1:5000/car/?modelo=${encodeURIComponent(selectedModelo)}&marca=${encodeURIComponent(selectedMarca)}`; 
 
         let label = "None";
 
         fetch(data)
             .then(response => response.json())
             .then(data => {
-                label = Object.values(data.coche[1])[5] + "";
+                label = Object.values(data.coche[1])[5] + ""; //coge el primer coche de la lista y comprueba su etiqueda en relacion al consumo.
                 console.log("label antes del switch: " + label);
 
                 var labelText = document.getElementById("resultado");
