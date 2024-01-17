@@ -44,12 +44,53 @@
                     position: absolute;
                     bottom: 40%;
                     left: 65%;
-                    }
+                }
+
+                #resultado {
+                    margin: 20px 20px 0px 20px;
+                    padding: 15px;
+                    font-weight: bold;
+                    background-color: #1b7284;
+                    color: #fff;
+                    border-radius: 5px;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                    text-align: left;
+                    width: 20em;
+                    transition: background-color 0.3s ease;
+                }
+                .resultado-verde {
+                    background-color: #27ae60;
+                }
+
+                .resultado-amarillo {
+                    background-color: #f39c12;
+                }
+
+                .resultado-rojo {
+                    background-color: #e74c3c;
+                }
+                
+                .text{
+                    margin: 20px 20px 0px 20px;
+                }
+
+                #marcaDropdown {
+                    /* Stuff de decoracion */
+                }
+
+                #modeloDropdown {
+                    /* Stuff de decoracion */
+                }
+
+                #buttonShowMap {
+                    /* Stuff de decoracion */
+                    margin: 20px 20px 0px 20px;
+                }
             </style>
 </head>
 <body>
 
-<label for="marcaDropdown">Selecciona Marca:</label>
+<label for="marcaDropdown" class="text">Selecciona Marca:</label>
 <select id="marcaDropdown" onchange="cargarModelos()">
     <option value="" disabled selected>Seleccione una marca</option>
 </select>
@@ -57,21 +98,17 @@
 
 <br>
 
-<label for="modeloDropdown">Selecciona Modelo:</label>
+<label for="modeloDropdown" class="text">Selecciona Modelo:</label>
 <select id="modeloDropdown">
     <option value="" disabled selected>Primero seleccione una marca</option>
 </select>
 
 <br>
 
-<button onclick="showMap()">Mostrar showMap</button>
+<button onclick="showMap()" id="buttonShowMap">Mostrar showMap</button>
 
-<!-- 
-<table id="tablaRegistros">
-     Aquí se mostrarán los registros 
-</table> 
--->
-
+<br>
+<div id="resultado"></div>
 <br>
 
 <div class="folium-map" id="map" ></div>
@@ -195,6 +232,8 @@ style="z-index: 999999">
                 label = Object.values(data.coche[1])[5] + "";
                 console.log("label antes del switch: " + label);
 
+                var labelText = document.getElementById("resultado");
+
                 map.removeLayer(centerAreaPolygonGreen);
                 map.removeLayer(outerAreaPolygonYellow);
                 map.removeLayer(centerAreaPolygonRed);
@@ -202,18 +241,22 @@ style="z-index: 999999">
                 switch(label) {
                     case "A":
                         centerAreaPolygonGreen.addTo(map);
+                        labelText.className = "resultado-verde";
                         break;
                     case "B":
                         outerAreaPolygonYellow.addTo(map);
                         centerAreaPolygonRed.addTo(map);
+                        labelText.className = "resultado-yellow";
                         break;
                     case "C":
                         centerAreaPolygonRed.addTo(map);
+                        labelText.className = "resultado-red";
                         break;
                     default: 
                         break;
                 } 
-            
+
+                labelText.innerHTML = "Tu cohe tiene una etiqueta tipo: " + label;
 
             }).catch(error => console.error('Error al traer los registros:', error));
     }

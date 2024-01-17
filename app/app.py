@@ -1,5 +1,5 @@
 from flask_cors import CORS
-from flask import Flask
+from flask import Flask, redirect
 from config import config
 from db.client import initialize_database, create_new_table, check_empty_table
 from use_cases.coche import load_coches
@@ -15,6 +15,11 @@ CORS(app)
 
 def page_not_found(error):
     return "<h1>Not found page</h1>"
+
+# Ruta predeterminada que redirige a /view
+@app.route('/')
+def index():
+    return redirect('/view')
 
 if __name__ == '__main__':
     app.config.from_object(config['development'])
