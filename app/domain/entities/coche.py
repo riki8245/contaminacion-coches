@@ -10,7 +10,6 @@ class Coche:
         self.km_mes = km_mes
         self.grco2_km = grco2_km
         self.grco2 = grco2
-        self.label = ("A" if grco2_km <= 95 else "B" if grco2_km <= 120 else "C") if grco2_km else None
 
     @classmethod
     def from_dict(cls, data):
@@ -24,7 +23,6 @@ class Coche:
             km_mes=data.get('km_mes'),
             grco2_km=data.get('grco2_km'),
             grco2=data.get('grco2'),
-            label=data.get('label') #Quiza corregir
         )
 
     def to_dict(self):
@@ -38,7 +36,6 @@ class Coche:
             'km_mes': self.km_mes,
             'grco2_km': self.grco2_km,
             'grco2': self.grco2,
-            'label': self.label
         }
 
     def headers(self):
@@ -59,7 +56,6 @@ class Coche:
         coche.km_mes = values[6]
         coche.grco2_km = values[7]
         coche.grco2 = values[8]
-        coche.label = ("A" if coche.grco2_km <= 95 else "B" if coche.grco2_km <= 120 else "C") if coche.grco2_km else None
         return coche
 
     def update_coche(self, item):
@@ -72,8 +68,6 @@ class Coche:
         self.tipovehiculo = item.tipovehiculo if item.tipovehiculo else self.tipovehiculo
         self.km_mes = item.km_mes if item.km_mes else self.km_mes
         self.grco2_km = item.grco2_km if item.grco2_km else self.grco2_km
-        self.grco2 = item.grco2 if item.grco2 else self.grco2
-        self.label = ("A" if item.grco2_km <= 95 else "B" if item.grco2_km <= 120 else "C") if item.grco2_km else self.label
-        
+        self.grco2 = item.grco2 if item.grco2 else self.grco2        
 
         return self
